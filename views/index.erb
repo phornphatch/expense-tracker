@@ -1,0 +1,24 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://unpkg.com/@picocss/pico@1.*/css/pico.min.css">
+</head>
+<body>
+<div class="container">
+<h2>Add</h2>
+<div>Income</div>
+<form action="/income" method="post">
+  <input type="number" name="income-salary" />
+  <input type="number" name="income-bonus" />
+  <input type="number" name="income-allowance" />
+  <input type="number" name="income-others" />
+  <input type="submit" value="submit" />
+</form>
+
+Total income: <%= x.total_income %>
+<form action="/income" method="post">
+  <input type="hidden" name="_method" value="DELETE">
+  <input type="submit" value="delete all incomes" />
+</form>
+</div>
+</body>
+</html>
