@@ -25,8 +25,22 @@ if ARGV[0] == 'add-expense'
   bs.add_expense(expense)
 end
 
-if ARGV[0] == 'net-income'
-  p bs.net_income
+bs.net_income if ARGV[0] == 'net-income'
+
+if ARGV[0] == 'delete-all'
+  type = ARGV[1]
+  if type.nil?
+    p 'please specify type ex. delete-all income'
+    exit 1
+  end
+  
+  unless %w[income expense].include?(type)
+    p 'please specify valid type (income or expense)'
+    exit 1
+  end
+  
+  bs.delete(type)
+  p 'done'
 end
 
 File.open('db.json', 'w') { |f| f.write(bs.to_json) }

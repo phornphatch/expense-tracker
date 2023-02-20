@@ -29,7 +29,6 @@ class BalanceSheet
   private def sum_by_type(type, transactions)
     transactions.sum(0) do |transaction|
       return transaction.amount if transaction.type == type
-
       0
     end
   end
@@ -45,6 +44,11 @@ class BalanceSheet
   def from_hash(json_data)
     @incomes = json_data['incomes'].map { |i| Income.from_hash(i) } if json_data['incomes']
     @expenses = json_data['expenses'].map { |e| Expense.from_hash(e) } if json_data['expenses']
+  end
+
+  def delete(type)
+    @expenses = [] if type == 'expense'
+    @incomes = [] if type == 'income'
   end
 
   def to_json(*_args)
