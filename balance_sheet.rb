@@ -10,6 +10,10 @@ class BalanceSheet
     @incomes.sum(0) { |income| income.amount }
   end
 
+  def total_expense
+    @expenses.sum(0) { |expense| expense.amount }
+  end
+
   def total_SSF
     sum_by_type('SSF', @expenses)
   end

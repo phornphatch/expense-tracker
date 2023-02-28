@@ -1,0 +1,9 @@
+@media only screen and (prefers-color-scheme: dark) {
+  :root:not([data-theme])  {
+  --primary: #d81b60;
+}
+}
+
+.red {
+  color: red;
+}
