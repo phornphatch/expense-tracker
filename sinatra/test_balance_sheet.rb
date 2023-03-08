@@ -8,8 +8,8 @@ require './balance_sheet'
 class TestBalanceSheet < Minitest::Test
   def setup
     @balance_sheet = BalanceSheet.new
-    income = Income.new 'salary', 100, DateTime.new(2023, 1, 30), 'this is note'
-    income2 = Income.new 'salary', 100, DateTime.new(2023, 1, 30), 'this is note'
+    income = Income.new 'Salary', 100, DateTime.new(2023, 1, 30), 'this is note'
+    income2 = Income.new 'Allowance', 100, DateTime.new(2023, 1, 30), 'this is note'
     income3 = Income.new 'Bonus', 100, DateTime.new(2023, 1, 30), 'this is note'
     @balance_sheet.add_income(income)
     @balance_sheet.add_income(income2)
@@ -41,7 +41,20 @@ class TestBalanceSheet < Minitest::Test
   end
 
   def test_to_json_should_return_balance_sheet_in_json_format
-    expected = '{"incomes":[{"type":"salary","amount":100,"date":"2023-01-30T00:00:00+00:00","note":"this is note"},{"type":"salary","amount":100,"date":"2023-01-30T00:00:00+00:00","note":"this is note"},{"type":"Bonus","amount":100,"date":"2023-01-30T00:00:00+00:00","note":"this is note"}],"expenses":[{"type":"SSF","amount":50,"date":"2023-01-30T00:00:00+00:00","note":"this is note"},{"type":"Tax","amount":30,"date":"2023-01-30T00:00:00+00:00","note":"this is note"}]}'
+    expected = '{"incomes":[{"type":"Salary","amount":100,"date":"2023-01-30T00:00:00+00:00","note":"this is note"},{"type":"Allowance","amount":100,"date":"2023-01-30T00:00:00+00:00","note":"this is note"},{"type":"Bonus","amount":100,"date":"2023-01-30T00:00:00+00:00","note":"this is note"}],"expenses":[{"type":"SSF","amount":50,"date":"2023-01-30T00:00:00+00:00","note":"this is note"},{"type":"Tax","amount":30,"date":"2023-01-30T00:00:00+00:00","note":"this is note"}]}'
     assert_equal expected, @balance_sheet.to_json
+  end
+
+  def test_group_income_should_group_income_by_date
+    expected = {
+      "2023-01-30T00:00:00+00:00" => {
+        salary: 100,
+        bonus: 100,
+        allowance: 100,
+        others: 0,
+        note: 'this is note',
+      }
+    }
+    assert_equal expected, @balance_sheet.group_income
   end
 end
