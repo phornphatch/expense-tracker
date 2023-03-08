@@ -1,0 +1,227 @@
+<h2 class="red">Expense Tracker</h2>
+<%# <form action="/income" method="post">
+  <div class="grid">
+    <label for="income-salary">
+    Salary
+    <input type="number" name="income-salary" placeholder="Salary"/>
+    </label>
+    <label for="income-bonus">
+    Bonus
+    <input type="number" name="income-bonus"  placeholder="Bonus" />
+    </label>
+    <label for="income-allowance">
+    Allowance
+    <input type="number" name="income-allowance"  placeholder="Allowance" />
+    </label>
+    <label for="income-others">
+    Others
+    <input type="number" name="income-others"  placeholder="Others" />
+    </label>
+  </div>
+   <label for="income-note">
+    Note
+    <input type="text" name="income-note" placeholder="Note"/>
+  <input type="submit" value="submit" />
+</form>
+<form action="/expense" method="post">
+  <div class="grid">
+    <label for="expense-ssf">
+    SSF
+    <input type="number" name="expense-ssf" placeholder="SSF"/>
+    </label>
+    <label for="expense-tax">
+    Tax
+    <input type="number" name="expense-tax"  placeholder="Withholding Tax" />
+    </label>
+    <label for="expense-others">
+    Others
+    <input type="number" name="expense-others"  placeholder="Others" />
+    </label>
+  </div>
+   <label for="expense-note">
+    Note
+    <input type="text" name="expense-note" placeholder="Note"/>
+  <input type="submit" value="submit" />
+</form> %>
+<article class="center">
+  <div>Balance</div>
+  <div><%= x.net_income %></div>
+</article>
+<div class="grid">
+  <article>Total income: <%= x.total_income %></article>
+  <article>Total Expense: <%= x.total_expense %></article>
+</div>
+<details>
+  <summary>Income details</summary>
+  <table>
+    <thead>
+      <th scope="col">#</th>
+      <th scope="col">Salary</th>
+      <th scope="col">Bonus</th>
+      <th scope="col">Allowance</th>
+      <th scope="col">Others</th>
+      <th scope="col">Note</th>
+    </thead>
+    <tbody>
+      <% x.group_income.each do |date, i| %>
+        <tr>
+          <th scope="row"><%= date %></th>
+          <td><%= i[:salary] %></td>
+          <td><%= i[:bonus] %></td>
+          <td><%= i[:allowance] %></td>
+          <td><%= i[:others] %></td>
+          <td><%= i[:note] %></td>
+        </tr>
+      <% end %>
+    </tbody>
+    <tfoot>
+      <tr>
+        <th scope="col">#</th>
+        <td scope="col">Total</td>
+        <td scope="col">Total</td>
+        <td scope="col">Total</td>
+        <td scope="col">Total</td>
+        <td scope="col">-</td>
+      </tr>
+    </tfoot>
+  </table>
+</details>
+<details>
+  <summary>Expense details</summary>
+  <table>
+    <thead>
+      <th scope="col">#</th>
+      <th scope="col">SSF</th>
+      <th scope="col">Tax</th>
+      <th scope="col">Others</th>
+      <th scope="col">Note</th>
+    </thead>
+    <tbody>
+      <% @x.group_expense.each do |date, e| %>
+        <tr>
+          <th scope="row"><%= date %></th>
+          <td><%= e[:SSF] %></td>
+          <td><%= e[:Tax] %></td>
+          <td><%= e[:others] %></td>
+          <td><%= e[:note] %></td>
+        </tr>
+      <% end %>
+    </tbody>
+    <tfoot>
+      <tr>
+        <th scope="col">#</th>
+        <td scope="col">Total</td>
+        <td scope="col">Total</td>
+        <td scope="col">Total</td>
+        <td scope="col">-</td>
+      </tr>
+    </tfoot>
+  </table>
+</details>
+<div class="grid">
+  <button class="contrast"
+    data-target="modal-add-income">
+    Add Income
+  </button>
+  <button class="contrast"
+    data-target="modal-add-expense">
+    Add Expense
+  </button>
+</div>
+<dialog id="modal-add-income">
+  <article>
+    <a 
+      aria-label="Close"
+      class="close"
+      data-target="modal-add-income-close">
+    </a>
+    <h3>Add Income</h3>
+    <form action="/income" method="post">
+      <div class="grid">
+        <label for="income-salary">
+          Salary
+          <input type="number" name="income-salary" placeholder="Salary"/>
+        </label>
+        <label for="income-bonus">
+          Bonus
+          <input type="number" name="income-bonus"  placeholder="Bonus" />
+        </label>
+        <label for="income-allowance">
+          Allowance
+          <input type="number" name="income-allowance"  placeholder="Allowance" />
+        </label>
+        <label for="income-others">
+          Others
+          <input type="number" name="income-others"  placeholder="Others" />
+        </label>
+      </div>
+      <label for="income-note">
+        Note
+        <input type="text" name="note" placeholder="Note"/>
+        <input type="submit" value="submit" />
+        <footer>
+          <a 
+        role="button"
+        class="secondary"
+        data-target="modal-add-income-cancel"
+        onClick="toggleModal(event)">
+            Cancel
+          </a>
+          <input type="submit" value="submit"  
+        data-target="modal-add-income"
+        onClick="toggleModal(event)"/>
+        </footer>
+      </form>
+    </article>
+  </dialog>
+  <dialog id="modal-add-expense">
+    <article>
+      <a href="#close"
+      aria-label="Close"
+      class="close"
+      data-target="modal-add-expense"
+      >
+      </a>
+      <h3>Add Expense</h3>
+      <form action="/expense" method="post">
+        <div class="grid">
+          <label for="expense-ssf">
+            SSF
+            <input type="number" name="expense-ssf" placeholder="SSF"/>
+          </label>
+          <label for="expense-tax">
+            Tax
+            <input type="number" name="expense-tax"  placeholder="Withholding Tax" />
+          </label>
+          <label for="expense-others">
+            Others
+            <input type="number" name="expense-others"  placeholder="Others" />
+          </label>
+        </div>
+        <label for="expense-note">
+          Note
+          <input type="text" name="expense-note" placeholder="Note"/>
+          <input type="submit" value="submit" />
+          <footer>
+            <a href="#cancel"
+        role="button"
+        class="secondary"
+        data-target="modal-add-expense"
+        >
+              Cancel
+            </a>
+            <input type="submit" value="submit"  
+        data-target="modal-add-expense"
+        />
+          </footer>
+        </form>
+      </article>
+    </dialog>
+    <form action="/income" method="post">
+      <input type="hidden" name="_method" value="DELETE">
+      <input type="submit" value="Delete all incomes" />
+    </form>
+    <form action="/expense" method="post">
+      <input type="hidden" name="_method" value="DELETE" >
+      <input type="submit" value="Delete all expenses" />
+    </form>
